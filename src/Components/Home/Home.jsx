@@ -172,7 +172,7 @@ const Home = () => {
         className="max-w-5xl mx-auto"
       >
         <h1 className="text-6xl sm:text-7xl font-black text-blue-900 mb-6 tracking-tighter">
-          Welcome to <span className="text-cyan-600">SCADE Studio</span>
+          Welcome to <span className="text-cyan-600">SCADE Store - Studio</span>
         </h1>
         <p className="text-xl sm:text-2xl text-gray-700 font-light mb-16">
           Redefining innovation through <strong>science, care, and technology</strong>
