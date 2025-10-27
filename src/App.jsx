@@ -12,6 +12,9 @@ import Contact from "./Components/ContactUs/Contact";
 import ScrollToTopButton from "./Components/ScrollToTop";
 import ScrollToTopOnNavigate from "./Components/ScrollonNavigate";
 
+/* NEW */
+import Chatbot from "./Components/Chatbot";
+
 const App = () => {
   return (
     <Router>
@@ -46,11 +49,12 @@ const App = () => {
 
         <Footer />
 
-        {/* Scroll-to-top button (still there if you want it) */}
+        {/* Scroll helpers */}
         <ScrollToTopButton />
-
-        {/* Auto scroll to top on every route change */}
         <ScrollToTopOnNavigate />
+
+        {/* NEW – Chatbot */}
+        <Chatbot />
       </div>
     </Router>
   );
