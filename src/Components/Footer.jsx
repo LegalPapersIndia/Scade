@@ -22,7 +22,7 @@ const Footer = () => {
   const quickLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Mag | mist", path: "/products" },
+    { name: "Magmist", path: "/products" },
     { name: "Team", path: "/team" },
     { name: "Contact", path: "/contact" },
   ];
