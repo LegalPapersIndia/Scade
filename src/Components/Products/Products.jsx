@@ -1,4 +1,4 @@
-// src/components/Products.jsx
+// src/components/Products/Products.jsx
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -15,7 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-// Animation Variants
+/* ────────────────────── Animation Variants ────────────────────── */
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -39,6 +39,7 @@ const imageVariants = {
   show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
+/* ────────────────────── Component ────────────────────── */
 const Products = () => {
   const features = [
     {
@@ -93,7 +94,7 @@ const Products = () => {
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-b from-blue-50 via-white to-cyan-50 min-h-screen px-6 md:px-10">
-      {/* Hero Header */}
+      {/* ───── HERO HEADER ───── */}
       <motion.header
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -131,20 +132,21 @@ const Products = () => {
         </motion.div>
       </motion.header>
 
-      {/* Hero Section: Image + Description */}
+      {/* ───── HERO IMAGE + DESCRIPTION ───── */}
       <section className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Product Image */}
           <motion.div
             variants={imageVariants}
             initial="hidden"
-            animate="show"
+            whileInView="show"
+            viewport={{ once: true }}
             className="order-2 lg:order-1"
           >
             <div className="relative group">
               <img
-                src="https://images.unsplash.com/photo-1549488344-93be13501a31?q=80&w=1631&auto=format&fit=crop"
-                alt="Magmist Atmospheric Water Generator — sleek, modern, eco-friendly design"
+                src="https://media.istockphoto.com/id/486755202/photo/torrent.webp?a=1&b=1&s=612x612&w=0&k=20&c=1GXOaZshUYtjnL9mzNW_27W5jD_wvsvYg3LKtEz7Pgs="
+                alt="Magmist Atmospheric Water Generator – sleek, modern, eco-friendly design"
                 className="rounded-3xl shadow-2xl w-full object-cover border border-gray-200 group-hover:shadow-3xl transition-shadow duration-500"
                 loading="lazy"
               />
@@ -160,14 +162,17 @@ const Products = () => {
           <motion.div
             className="order-1 lg:order-2 space-y-6"
             initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <h2 className="text-4xl font-bold text-blue-900">
               Pure Water. From Thin Air.
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Magmist doesn’t just <em>filter</em> water — it <strong>creates</strong> it. Using advanced condensation and multi-stage purification, it delivers <strong>alkaline, mineral-rich water</strong> with zero waste, zero plastic, and zero dependency on external sources.
+              Magmist doesn’t just <em>filter</em> water — it <strong>creates</strong> it. Using advanced
+              condensation and multi-stage purification, it delivers <strong>alkaline, mineral-rich water</strong>{" "}
+              with zero waste, zero plastic, and zero dependency on external sources.
             </p>
 
             <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-6 rounded-2xl shadow-inner border-l-4 border-cyan-600">
@@ -176,17 +181,19 @@ const Products = () => {
               </blockquote>
             </div>
 
-            <motion.button
-              whileHover={{ x: 5 }}
+            <motion.a
+              href="#magmist-details"
               className="inline-flex items-center gap-2 bg-cyan-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-cyan-700 transition-all"
+              whileHover={{ x: 5 }}
+              aria-label="Explore Magmist product details"
             >
               Explore Magmist <ArrowRight size={20} />
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* ───── FEATURES GRID ───── */}
       <motion.section
         className="max-w-7xl mx-auto mt-24"
         variants={containerVariants}
@@ -209,7 +216,7 @@ const Products = () => {
               whileHover={{ y: -8, scale: 1.03 }}
               className={`group relative bg-gradient-to-br ${feature.color} p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-cyan-300 overflow-hidden`}
             >
-              {/* Gradient Overlay */}
+              {/* Gradient overlay on hover */}
               <div className="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative z-10">
@@ -222,31 +229,37 @@ const Products = () => {
                 <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
               </div>
 
-              {/* Decorative Corner */}
-              <Gauge className="absolute bottom-2 right-2 text-cyan-400/20" size={32} />
+              {/* Decorative gauge */}
+              <Gauge className="absolute bottom-2 right-2 text-cyan-400/20" size={32} aria-hidden="true" />
             </motion.div>
           ))}
         </div>
       </motion.section>
 
-      {/* Final CTA */}
+      {/* ───── FINAL CTA – WHATSAPP ───── */}
       <motion.div
         className="max-w-4xl mx-auto text-center mt-20"
         initial={{ opacity: 0, y: 30 }}
-        while1whileInView={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.3 }}
       >
         <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">
           Ready to Drink the Future?
         </h3>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-10 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-cyan-500/50 transition-all flex items-center gap-3 mx-auto"
-        >
-          Get Magmist Now <Droplet className="animate-pulse" size={24} />
-        </motion.button>
+
+<motion.a
+  href="https://wa.me/917411532800?text=Hi%20SCADE%20Team!%20I%20want%20to%20know%20more%20about%20Magmist."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-full text-base font-bold shadow-lg hover:shadow-cyan-500/40 transition-all"
+  whileHover={{ scale: 1.06 }}
+  whileTap={{ scale: 0.96 }}
+  aria-label="Contact us on WhatsApp to get Magmist"
+>
+  <Droplet className="animate-pulse" size={40} />
+  Get Magmist
+</motion.a>
       </motion.div>
     </div>
   );
