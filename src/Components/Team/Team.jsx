@@ -1,17 +1,17 @@
 // src/components/Team.jsx
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   User,
   Activity,
   BarChart3,
   Shield,
-  DollarSign,
   HeartHandshake,
   Lightbulb,
   Users,
   Sparkles,
   Quote,
+  ChevronDown,
 } from "lucide-react";
 
 // Animation Variants
@@ -148,73 +148,78 @@ const Team = () => {
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {teamMembers.map((member, index) => (
-            <motion.article
-              key={index}
-              variants={cardVariants}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className={`group relative bg-gradient-to-br ${member.color} p-1 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden`}
-            >
-              {/* Inner Card */}
-              <div className="bg-white rounded-[22px] p-6 h-full relative z-10">
-                {/* Header */}
-                <div className="flex items-start gap-4 mb-5">
-                  <div className="p-3 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md group-hover:scale-110 transition-transform">
-                    {member.icon}
+          {teamMembers.map((member, index) => {
+            const [isOpen, setIsOpen] = useState(false);
+
+            return (
+              <motion.article
+                key={index}
+                variants={cardVariants}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className={`group relative bg-gradient-to-br ${member.color} p-1 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden`}
+              >
+                {/* Inner Card */}
+                <div className="bg-white rounded-[22px] p-6 h-full relative z-10">
+                  {/* Header */}
+                  <div className="flex items-start gap-4 mb-5">
+                    <div className="p-3 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md group-hover:scale-110 transition-transform">
+                      {member.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
+                      <p className="text-sm text-gray-500">{member.title}</p>
+                      <p className="text-cyan-600 font-semibold mt-1">{member.role}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
-                    <p className="text-sm text-gray-500">{member.title}</p>
-                    <p className="text-cyan-600 font-semibold mt-1">{member.role}</p>
+
+                  {/* Background */}
+                  <div className="mb-4">
+                    <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">Background</p>
+                    <p className="text-sm text-gray-700 mt-1">{member.background}</p>
                   </div>
+
+                  {/* Contribution */}
+                  <div className="mb-4">
+                    <p className="text-xs font-medium text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                      <Lightbulb size={14} className="text-yellow-500" /> Contribution
+                    </p>
+                    <p className="text-sm text-gray-700 mt-1 leading-relaxed">{member.contribution}</p>
+                  </div>
+
+                  {/* Bio – Expandable */}
+                  <details className="group/bio cursor-pointer" onToggle={(e) => setIsOpen(e.currentTarget.open)}>
+                    <summary className="text-xs font-medium text-gray-600 uppercase tracking-wider list-none flex items-center justify-between select-none">
+                      <span className="flex items-center gap-1">
+                        <Users size={14} className="text-cyan-500" /> Personal Story
+                      </span>
+                      <motion.span
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-cyan-600"
+                      >
+                        <ChevronDown size={16} />
+                      </motion.span>
+                    </summary>
+                    <p className="text-sm text-gray-600 mt-2 leading-relaxed pb-2 border-b border-gray-100">
+                      {member.bio}
+                    </p>
+                  </details>
+
+                  {/* Quote */}
+                  <blockquote className="mt-5 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border-l-4 border-cyan-600">
+                    <Quote className="text-cyan-600 mb-2" size={20} />
+                    <p className="text-cyan-800 font-semibold italic text-sm leading-relaxed">
+                      {member.quote}
+                    </p>
+                  </blockquote>
                 </div>
 
-                {/* Background */}
-                <div className="mb-4">
-                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">Background</p>
-                  <p className="text-sm text-gray-700 mt-1">{member.background}</p>
-                </div>
-
-                {/* Contribution */}
-                <div className="mb-4">
-                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <Lightbulb size={14} className="text-yellow-500" /> Contribution
-                  </p>
-                  <p className="text-sm text-gray-700 mt-1 leading-relaxed">{member.contribution}</p>
-                </div>
-
-                {/* Bio */}
-                <details className="group/bio cursor-pointer">
-                  <summary className="text-xs font-medium text-gray-600 uppercase tracking-wider list-none flex items-center justify-between">
-                    <span className="flex items-center gap-1">
-                      <Users size={14} className="text-cyan-500" /> Personal Story
-                    </span>
-                    <motion.span
-                      animate={{ rotate: open ? 180 : 0 }}
-                      className="text-cyan-600"
-                    >
-                      ▼
-                    </motion.span>
-                  </summary>
-                  <p className="text-sm text-gray-600 mt-2 leading-relaxed pb-2 border-b border-gray-100">
-                    {member.bio}
-                  </p>
-                </details>
-
-                {/* Quote */}
-                <blockquote className="mt-5 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border-l-4 border-cyan-600">
-                  <Quote className="text-cyan-600 mb-2" size={20} />
-                  <p className="text-cyan-800 font-semibold italic text-sm leading-relaxed">
-                    {member.quote}
-                  </p>
-                </blockquote>
-              </div>
-
-              {/* Decorative Elements */}
-              <Sparkles className="absolute top-4 right-4 text-cyan-400/20" size={40} />
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </motion.article>
-          ))}
+                {/* Decorative Elements */}
+                <Sparkles className="absolute top-4 right-4 text-cyan-400/20" size={40} />
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.article>
+            );
+          })}
         </div>
       </motion.section>
 
