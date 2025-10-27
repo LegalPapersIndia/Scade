@@ -182,7 +182,7 @@ const Products = () => {
             </div>
 
             <motion.a
-              href="#magmist-details"
+              href="#"
               className="inline-flex items-center gap-2 bg-cyan-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-cyan-700 transition-all"
               whileHover={{ x: 5 }}
               aria-label="Explore Magmist product details"
