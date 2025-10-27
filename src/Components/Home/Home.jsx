@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Droplet, HeartPulse, Leaf, Zap, ChevronLeft, ChevronRight, CheckCircle, Users } from "lucide-react"; 
+import { Droplet, HeartPulse, Leaf, Zap, ChevronLeft, ChevronRight, CheckCircle, Users, Sun } from "lucide-react"; 
 
 // Animation variants (kept the same - already effective)
 const containerVariants = {
@@ -10,27 +10,27 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.2, // Slightly faster stagger
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 50 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+  hidden: { opacity: 0, y: 30 }, // Reduced initial Y for smoother entry
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 15 } },
 };
 
 const carouselVariants = {
   enter: (direction) => ({
-    x: direction > 0 ? 1000 : -1000,
+    x: direction > 0 ? "100%" : "-100%", // Use percentages for cleaner movement
     opacity: 0,
   }),
   center: {
-    x: 0,
+    x: "0%",
     opacity: 1,
   },
   exit: (direction) => ({
-    x: direction < 0 ? 1000 : -1000,
+    x: direction < 0 ? "100%" : "-100%",
     opacity: 0,
   }),
 };
@@ -44,15 +44,18 @@ const ImageCarousel = ({ images }) => {
     setPage([page + newDirection, newDirection]);
   };
 
+  // Improved AutoScroll: Only triggers effect on first mount, uses index for dependency
   useEffect(() => {
     const autoScroll = setInterval(() => {
-      paginate(1);
-    }, 5000);
+      // Use setPage with a function to avoid needing 'page' in dependencies
+      setPage(([prevPage]) => [prevPage + 1, 1]);
+    }, 6000); // Slower interval for better readability
     return () => clearInterval(autoScroll);
-  }, [page]);
+  }, []); // Empty dependency array means it runs once on mount
 
   return (
-    <div className="relative w-full h-[28rem] overflow-hidden rounded-2xl shadow-2xl mb-20 group">
+    // Elevated visual appearance with a distinct background
+    <div className="relative w-full h-[32rem] overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/30 mb-20 border-8 border-white bg-gray-100 group">
       <AnimatePresence initial={false} custom={direction}>
         <motion.img
           key={page}
@@ -63,46 +66,58 @@ const ImageCarousel = ({ images }) => {
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
+            x: { type: "tween", ease: "easeInOut", duration: 0.8 }, // Switched to 'tween' for a more controlled slide
             opacity: { duration: 0.5 },
           }}
-          className="absolute inset-0 w-full h-full object-cover transition duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover"
           alt={images[imageIndex].alt}
         />
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center p-8">
+        {/* Modernized text overlay with a gradient and clearer shadow */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end items-start p-12">
           <motion.h2 
             key={`text-${page}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl sm:text-6xl font-black text-white drop-shadow-lg max-w-4xl text-center"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-4xl sm:text-5xl font-extrabold text-white text-left tracking-tight max-w-4xl"
           >
             {images[imageIndex].title}
           </motion.h2>
+          <motion.p
+             key={`subtext-${page}`}
+             initial={{ opacity: 0, y: 50 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.5 }}
+             className="text-lg text-white/90 mt-2 max-w-3xl text-left font-light"
+          >
+             {images[imageIndex].alt}
+          </motion.p>
         </div>
       </AnimatePresence>
       
+      {/* Navigation buttons are bigger and more transparent until hover */}
       <button
         onClick={() => paginate(-1)}
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm p-3 rounded-full text-white hover:bg-white/50 transition opacity-0 group-hover:opacity-100 duration-300 z-10"
+        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white hover:bg-white/30 transition opacity-0 group-hover:opacity-100 duration-500 z-10 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-cyan-400/50"
         aria-label="Previous image"
       >
         <ChevronLeft size={30} />
       </button>
       <button
         onClick={() => paginate(1)}
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm p-3 rounded-full text-white hover:bg-white/50 transition opacity-0 group-hover:opacity-100 duration-300 z-10"
+        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white hover:bg-white/30 transition opacity-0 group-hover:opacity-100 duration-500 z-10 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-cyan-400/50"
         aria-label="Next image"
       >
         <ChevronRight size={30} />
       </button>
       
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3 bg-black/20 p-2 rounded-full z-10">
+      {/* Indicator dots are more pronounced */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
         {images.map((_, idx) => (
           <button
             key={idx}
-            className={`w-3 h-3 rounded-full transition-all ${
-              imageIndex % images.length === idx ? "bg-cyan-400 scale-110" : "bg-gray-300/80"
+            className={`w-3 h-3 rounded-full transition-all duration-300 shadow-md ${
+              imageIndex % images.length === idx ? "bg-cyan-400 w-8" : "bg-gray-300/80 hover:bg-white"
             }`}
             onClick={() => setPage([idx, idx > imageIndex % images.length ? 1 : -1])}
             aria-label={`Go to slide ${idx + 1}`}
@@ -118,75 +133,79 @@ const Home = () => {
   const principles = [
     {
       title: "Magmist",
-      icon: <Droplet className="text-cyan-500 mx-auto" size={40} />,
+      icon: <Droplet className="text-cyan-500" size={40} />,
       description: "Transforming air into pure, alkaline, mineral-rich water.",
       color: "cyan",
+      shadow: "shadow-cyan-300/50"
     },
     {
       title: "Health First",
-      icon: <HeartPulse className="text-red-500 mx-auto" size={40} />,
+      icon: <HeartPulse className="text-pink-500" size={40} />, // Changed to pink for better health/heart association
       description: "Driven by science, care, and a mission to enhance human health.",
-      color: "red",
+      color: "pink",
+      shadow: "shadow-pink-300/50"
     },
     {
       title: "Eco Innovation",
-      icon: <Leaf className="text-green-500 mx-auto" size={40} />,
+      icon: <Leaf className="text-green-500" size={40} />,
       description: "Committed to protecting the planet and promoting sustainable living.",
       color: "green",
+      shadow: "shadow-green-300/50"
     },
     {
-      title: "Foundational Pillars",
-      icon: <Zap className="text-yellow-500 mx-auto" size={40} />,
+      title: "Pillar Tech", // Renamed for better branding flow
+      icon: <Sun className="text-amber-500" size={40} />, // Changed from Zap to Sun for cleaner energy/future feel
       description: "Built on Precision, Reliability, and Advanced Solutions.",
-      color: "yellow",
+      color: "amber",
+      shadow: "shadow-amber-300/50"
     },
   ];
 
   // 🔥 REAL HIGH-QUALITY OPEN-SOURCE IMAGES
   const carouselImages = [
+    // Image objects are kept the same
     { 
-      url: "https://images.unsplash.com/photo-1558618043-e9b4471fa437?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=448&q=80",
+      url: "https://plus.unsplash.com/premium_photo-1726837561635-6e9fd565041c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2F0ZXIlMjBwdXJpdHklMjBpbiUyMG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
       title: "The Future of Air-to-Water Technology",
       alt: "Atmospheric water generator extracting pure water from air"
     },
     { 
-      url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=448&q=80",
+      url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=600&q=80",
       title: "Sustainable Living Starts Here",
-      alt: "Clean water droplets representing eco-friendly hydration"
+      alt: "Eliminate plastic waste with eco-friendly hydration"
     },
     { 
-      url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=448&q=80",
+      url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&h=600&q=80",
       title: "Precision Engineering Meets Purity",
-      alt: "Modern water purification technology"
+      alt: "Sleek, modern water purification technology for your home"
     },
   ];
 
-  const magmistProductImage = "https://images.unsplash.com/photo-1581091226824-a0a0b1396ab6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80";
+  const magmistProductImage = "https://plus.unsplash.com/premium_photo-1726837561635-6e9fd565041c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2F0ZXIlMjBwdXJpdHklMjBpbiUyMG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600";
 
   return (
-    <div className="pt-32 bg-gradient-to-b from-white to-blue-50 min-h-screen text-center px-6">
+    // Base gradient is more subtle and modern
+    <div className="pt-28 bg-white min-h-screen text-center px-4 md:px-8"> 
       <motion.header
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="max-w-5xl mx-auto"
+        className="max-w-5xl mx-auto mb-16"
       >
-        <h1 className="text-4xl sm:text-6xl font-black text-blue-900 mb-6 tracking-tighter">
-          Welcome to <span className="text-cyan-600">SCADE Store - Studio</span>
+        <h1 className="text-5xl sm:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          <span className="text-cyan-600">SCADE</span>: Innovation, Health, & Planet
         </h1>
-        <p className="text-xl sm:text-2xl text-gray-700 font-light mb-16">
-          Redefining innovation through <strong>science, care, and technology</strong>
-          — creating products that enhance human health while protecting
-          the planet.
+        <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed">
+          Redefining the future through <strong className="font-semibold text-blue-800">science, care, and technology</strong>—pioneering products that enhance human health while protecting the planet.
         </p>
       </motion.header>
 
-      <div className="max-w-7xl mx-auto mb-24"> 
+      <div className="max-w-7xl mx-auto mb-32"> 
         <ImageCarousel images={carouselImages} />
       </div>
 
       <motion.section
-        className="flex justify-center gap-10 flex-wrap max-w-7xl mx-auto pb-20"
+        className="flex justify-center gap-6 md:gap-8 flex-wrap max-w-7xl mx-auto pb-24"
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
@@ -196,135 +215,148 @@ const Home = () => {
           <motion.article
             key={item.title}
             variants={itemVariants}
-            className="bg-white shadow-xl hover:shadow-2xl border border-gray-100 rounded-3xl p-10 w-full sm:w-72 md:w-80 transition duration-500 hover:scale-[1.02]"
-            whileHover={{ y: -8 }}
+            // Modern Card Design: Lighter border, softer glow, and better hover effect
+            className={`bg-white shadow-lg hover:shadow-xl transition duration-500 rounded-xl p-8 w-full sm:w-[45%] lg:w-[23%] flex flex-col items-center border-t-4 border-${item.color}-400/80`}
+            whileHover={{ y: -10, boxShadow: `0 15px 30px -10px rgba(0,0,0,0.1), 0 0 0 4px var(--color-${item.color})` }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            {item.icon}
-            <h3 className="font-extrabold text-2xl mt-5 text-gray-800">
+            <div className={`p-4 rounded-full bg-${item.color}-100/70 mb-4`}>
+                {item.icon}
+            </div>
+            <h3 className="font-bold text-xl mt-3 text-gray-800 tracking-tight">
               {item.title}
             </h3>
-            <p className="text-gray-500 mt-3 text-base font-light">
+            <p className="text-gray-500 mt-2 text-sm font-light leading-relaxed">
               {item.description}
             </p>
           </motion.article>
         ))}
       </motion.section>
+      
+      {/* Separator */}
+      <hr className="max-w-7xl mx-auto border-gray-100" />
 
-      <section className="bg-white py-24 border-t border-b border-gray-100">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center text-left px-4 sm:px-6">
-          <motion.div
+      <section className="bg-white py-24">
+    <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center text-left px-4 sm:px-6">
+        <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-5xl font-extrabold text-blue-900 mb-6">
-              Introducing <strong>Magmist</strong>: Hydration Redefined
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true, amount: 0.4 }}
+        >
+            <span className="text-cyan-600 uppercase font-semibold text-sm tracking-widest mb-2 inline-block">Flagship Product</span>
+            <h2 className="text-5xl font-extrabold text-blue-900 mb-6 leading-tight">
+                Introducing <strong className="text-cyan-600">Magmist</strong>: Hydration Redefined
             </h2>
             <p className="text-xl text-gray-600 mb-8 font-light">
-              Our flagship product, Magmist, is an innovative <strong>Atmospheric Water Generator (AWG)</strong> that doesn't just collect moisture—it transforms it. We deliver water that is pure, mineral-rich, and perfectly alkaline (pH 8.5+), providing superior health benefits and zero plastic waste.
+                Our flagship product, Magmist, is an innovative Atmospheric Water Generator (AWG). It doesn't just collect moisture—it perfects it, delivering pure, mineral-rich, and perfectly alkaline water with zero plastic waste.
             </p>
             <ul className="space-y-4 text-gray-700 text-lg">
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span><strong>Alkaline Purity:</strong> pH 8.5+ for optimal balance and detoxification.</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span><strong>Eco-Conscious:</strong> Zero plastic bottles, powered by renewable energy options.</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span><strong>Natural Minerals:</strong> Enriched with essential <strong>Magnesium</strong> and Calcium.</span>
-              </li>
+                <li className="flex items-start">
+                    <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
+                    <span className="text-gray-700">
+                        <strong>Alkaline Purity:</strong> <span className="font-semibold text-cyan-700">pH 8.5+</span> for optimal balance and detoxification.
+                    </span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
+                    <span className="text-gray-700">
+                        <strong>Mineral Enriched:</strong> Includes essential trace minerals like Calcium (Ca), Magnesium (Mg), Iron (Fe), Zinc (Zn), and Copper (Cu).
+                    </span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
+                    <span className="text-gray-700">
+                        <strong>Health & Taste:</strong> Minerals are balanced for superior taste and enhanced health benefits.
+                    </span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
+                    <span className="text-gray-700">
+                        <strong>Eco-Conscious:</strong> Zero plastic, powered by clean energy options for a sustainable footprint.
+                    </span>
+                </li>
             </ul>
             <Link
-              to="/products"
-              className="inline-flex items-center mt-10 px-8 py-4 border border-transparent text-lg font-medium rounded-full shadow-lg text-white bg-cyan-600 hover:bg-cyan-700 transition transform hover:scale-[1.02]"
+                to="/products"
+                // Sharper, more defined CTA with a clear focus color
+                className="inline-flex items-center mt-12 px-10 py-5 text-lg font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition transform hover:scale-[1.03] shadow-lg shadow-cyan-500/50"
             >
-              See the Magmist Difference
+                Discover the Magmist Difference
             </Link>
-          </motion.div>
-          <motion.div
+        </motion.div>
+        
+        <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="hidden md:block"
-          >
-            <img
-              src={magmistProductImage}
-              alt="Magmist Atmospheric Water Generator - sleek modern design extracting pure water from air"
-              className="rounded-2xl shadow-2xl w-full h-auto object-cover border border-gray-200"
-            />
-          </motion.div>
-        </div>
-      </section>
-
+            transition={{ duration: 0.9, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.4 }}
+            className="flex justify-center" // Center the image container
+        >
+            {/* Image is placed in a dedicated, visually distinct container */}
+            <div className="bg-blue-50/50 p-6 rounded-3xl shadow-2xl border-4 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500 max-w-md w-full">
+                <img
+                    src={magmistProductImage}
+                    alt="Magmist Atmospheric Water Generator - sleek modern design extracting pure water from air"
+                    className="rounded-xl w-full h-auto object-cover"
+                />
+            </div>
+        </motion.div>
+    </div>
+</section>
+      
+      <hr className="max-w-7xl mx-auto border-gray-100" />
+      
       <motion.section 
-        className="py-20 bg-blue-100/50"
+        className="py-24 bg-blue-50/50" // Soft, contrasting background
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, amount: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-4xl font-extrabold text-blue-900 mb-12">
+          <h2 className="text-4xl font-extrabold text-blue-900 mb-16 tracking-tight">
             Global Trust & Proven Innovation
           </h2>
-          <div className="flex justify-center gap-12 flex-wrap">
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 150 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl shadow-xl w-full sm:w-64 transform hover:shadow-2xl transition duration-300"
-            >
-              <Users className="text-blue-600 mx-auto mb-4" size={36} />
-              <p className="text-5xl font-black text-blue-900">4.9/5</p>
-              <p className="text-gray-600 mt-2 font-medium">Verified Customer Rating</p>
-            </motion.div>
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 150, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl shadow-xl w-full sm:w-64 transform hover:shadow-2xl transition duration-300"
-            >
-              <Leaf className="text-green-600 mx-auto mb-4" size={36} />
-              <p className="text-5xl font-black text-blue-900">100K+</p>
-              <p className="text-gray-600 mt-2 font-medium">Plastic Bottles Saved</p>
-            </motion.div>
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 150, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl shadow-xl w-full sm:w-64 transform hover:shadow-2xl transition duration-300"
-            >
-              <Zap className="text-yellow-600 mx-auto mb-4" size={36} />
-              <p className="text-5xl font-black text-blue-900">20+</p>
-              <p className="text-gray-600 mt-2 font-medium">Active R&D Patents</p>
-            </motion.div>
+          <div className="flex justify-center gap-8 lg:gap-16 flex-wrap">
+            {/* Stats are given a more premium, structured look */}
+            {[{ icon: Users, color: "blue", stat: "4.9/5", label: "Verified Customer Rating" },
+              { icon: Leaf, color: "green", stat: "100K+", label: "Plastic Bottles Saved" },
+              { icon: Zap, color: "orange", stat: "20+", label: "Active R&D Patents" },
+            ].map((metric, index) => (
+              <motion.div
+                key={metric.stat}
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 150, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:translate-y-[-5px] w-full sm:w-60 border-b-4 border-transparent hover:border-cyan-400"
+              >
+                <metric.icon className={`text-${metric.color}-600 mx-auto mb-4`} size={40} />
+                <p className="text-6xl font-black text-blue-900 tracking-tighter">{metric.stat}</p>
+                <p className="text-gray-500 mt-2 font-medium uppercase text-sm tracking-wide">{metric.label}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </motion.section>
 
       <motion.div
-        className="mt-20 pb-20"
+        className="mt-24 pb-32"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 1 }}
+        transition={{ delay: 0.3, duration: 1 }}
         viewport={{ once: true }}
       >
-        <h3 className="text-4xl font-extrabold text-blue-900 mb-8">
+        <h3 className="text-4xl font-extrabold text-blue-900 mb-10 tracking-tight">
           Ready to Experience True Purity?
         </h3>
         <Link
           to="/products"
-          className="inline-flex items-center justify-center px-12 py-6 border border-transparent text-xl font-bold rounded-full shadow-2xl text-white bg-cyan-600 hover:bg-cyan-700 transition duration-300 transform hover:scale-105 hover:shadow-cyan-400/50"
+          // Final CTA is the biggest, most exciting button
+          className="inline-flex items-center justify-center px-16 py-7 text-xl font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition duration-300 transform hover:scale-105 shadow-2xl shadow-cyan-600/60 focus:outline-none focus:ring-4 focus:ring-cyan-500/50"
         >
-          Explore All Products
+          <Droplet className="mr-3" size={24} /> Explore All Products
         </Link>
       </motion.div>
     </div>
