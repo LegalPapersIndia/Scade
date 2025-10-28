@@ -53,7 +53,7 @@ const quickReplies = [
 /* -------------------------------------------------
     WhatsApp Constant
    ------------------------------------------------- */
-const WHATSAPP_NUMBER = "919876543210";
+const WHATSAPP_NUMBER = "917411532800";
 const WHATSAPP_PREFILL = encodeURIComponent(
   "Hi SCADE, I'm reaching out from the website chatbot. I'd like to chat with a human."
 );
