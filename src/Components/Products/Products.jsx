@@ -57,7 +57,7 @@ const Products = () => {
     {
       icon: <Zap className="text-yellow-600" size={28} />,
       title: "Ultra-Low Power",
-      description: "Uses less energy than a light bulb — solar compatible.",
+      description: "Uses less energy than a light bulb",
       color: "from-yellow-100 to-orange-50",
     },
     {

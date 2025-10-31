@@ -138,7 +138,7 @@ const About = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.6 }}
         >
-          About <span className="text-cyan-600">SCADE Studio</span>
+          About <span className="text-cyan-600">SCADE store-studio</span>
         </motion.h1>
 
         <motion.p
