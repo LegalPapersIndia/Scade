@@ -285,7 +285,7 @@ const About = () => {
                 <h4 className="font-bold text-gray-800">{benefit}</h4>
                 <p className="text-sm text-gray-600 mt-1">
                   {benefit === "Balances Body pH" && "Neutralizes acidity and helps maintain optimal metabolic health."}
-                  {benefit === "Supports Bone & Heart Health" && "Provides essential minerals like calcium and magnesium."}
+                  {benefit === "Supports Bone & Heart Health" && "Provides essential minerals like calcium, magnesium, copper and zinc."}
                   {benefit === "Aids Detoxification" && "Flushes out toxins and supports liver & kidney function."}
                   {benefit === "Boosts Energy & Endurance" && "Enhances hydration at a cellular level."}
                   {benefit === "Reduces Stress & Fatigue" && "Improves overall body function for vitality."}
