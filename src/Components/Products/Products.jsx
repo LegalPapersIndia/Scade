@@ -45,7 +45,7 @@ const Products = () => {
     {
       icon: <CloudRain className="text-cyan-600" size={28} />,
       title: "Air to Pure Water",
-      description: "Extracts moisture from air — endless supply, no source needed.",
+      description: "Extracts water from air — endless supply, no source needed.",
       color: "from-cyan-100 to-blue-50",
     },
     {
@@ -69,7 +69,7 @@ const Products = () => {
     {
       icon: <Heart className="text-pink-600" size={28} />,
       title: "Alkaline & Mineral-Rich",
-      description: "pH 8.5–9.5 with Ca²⁺ & Mg²⁺ — optimal for immunity & hydration.",
+      description: "pH 8.5–9.5 with Fe, Cu & Zn — optimal for immunity & hydration.",
       color: "from-pink-100 to-red-50",
     },
     {

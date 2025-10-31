@@ -155,7 +155,7 @@ const Home = () => {
     {
       title: "Pillar Tech", // Renamed for better branding flow
       icon: <Sun className="text-amber-500" size={40} />, // Changed from Zap to Sun for cleaner energy/future feel
-      description: "Built on Precision, Reliability, and Advanced Solutions.",
+      description: "Built on Precision, Reliability, Advanced Solutions, innovation, health & planet here.",
       color: "amber",
       shadow: "shadow-amber-300/50"
     },
@@ -193,7 +193,7 @@ const Home = () => {
         className="max-w-5xl mx-auto mb-16"
       >
         <h1 className="text-5xl sm:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight">
-          <span className="text-cyan-600">SCADE</span>: Innovation, Health, & Planet
+          <span className="text-cyan-600">SCADE</span>: Precision, Reliability & Advanced Solutions
         </h1>
         <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed">
           Redefining the future through <strong className="font-semibold text-blue-800">science, care, and technology</strong>—pioneering products that enhance human health while protecting the planet.
@@ -249,7 +249,7 @@ const Home = () => {
                 Introducing <strong className="text-cyan-600">Magmist</strong>: Hydration Redefined
             </h2>
             <p className="text-xl text-gray-600 mb-8 font-light">
-                Our flagship product, Magmist, is an innovative Atmospheric Water Generator (AWG). It doesn't just collect moisture—it perfects it, delivering pure, mineral-rich, and perfectly alkaline water with zero plastic waste.
+                Our flagship product, Magmist, is a cutting-edge Atmospheric Water Generator (AWG) that transforms air into life-sustaining hydration — delivering pure, mineral-enriched, perfectly alkaline water without a drop of water waste.
             </p>
             <ul className="space-y-4 text-gray-700 text-lg">
                 <li className="flex items-start">
