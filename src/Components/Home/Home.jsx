@@ -192,8 +192,8 @@ const Home = () => {
         transition={{ duration: 0.8 }}
         className="max-w-5xl mx-auto mb-16"
       >
-        <h1 className="text-5xl sm:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight">
-          <span className="text-cyan-600">SCADE</span>: Precision, Reliability & Advanced Solutions
+        <h1 className="text-5xl sm:text-7xl font-extrabold text-green-900 mb-6 tracking-tight">
+          <span className="text-cyan-600">SCADE -</span> Precision, Reliability & Advanced Solutions
         </h1>
         <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed">
           Redefining the future through <strong className="font-semibold text-blue-800">science, care, and technology</strong>—pioneering products that enhance human health while protecting the planet.
