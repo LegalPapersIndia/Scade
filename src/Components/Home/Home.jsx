@@ -38,13 +38,15 @@ const carouselVariants = {
 // --- ImageCarousel Component (REAL PRODUCT IMAGES) ---
 const ImageCarousel = ({ images }) => {
   const [[page, direction], setPage] = useState([0, 0]);
+  
+  // FIX: Calculate the content index using modulo
   const imageIndex = page % images.length;
 
   const paginate = (newDirection) => {
     setPage([page + newDirection, newDirection]);
   };
 
-  // Improved AutoScroll: Only triggers effect on first mount, uses index for dependency
+  // Improved AutoScroll
   useEffect(() => {
     const autoScroll = setInterval(() => {
       // Use setPage with a function to avoid needing 'page' in dependencies
@@ -58,7 +60,9 @@ const ImageCarousel = ({ images }) => {
     <div className="relative w-full h-[32rem] overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/30 mb-20 border-8 border-white bg-gray-100 group">
       <AnimatePresence initial={false} custom={direction}>
         <motion.img
-          key={page}
+          // FIX: Use imageIndex as the key instead of 'page'. 
+          // This ensures the animation only runs when the actual content (imageIndex) changes.
+          key={imageIndex} 
           src={images[imageIndex].url}
           custom={direction}
           variants={carouselVariants}
@@ -75,7 +79,8 @@ const ImageCarousel = ({ images }) => {
         {/* Modernized text overlay with a gradient and clearer shadow */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end items-start p-12">
           <motion.h2 
-            key={`text-${page}`}
+            // FIX: Use imageIndex in the key for content transition
+            key={`text-${imageIndex}`}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -84,7 +89,8 @@ const ImageCarousel = ({ images }) => {
             {images[imageIndex].title}
           </motion.h2>
           <motion.p
-             key={`subtext-${page}`}
+             // FIX: Use imageIndex in the key for content transition
+             key={`subtext-${imageIndex}`}
              initial={{ opacity: 0, y: 50 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.8, delay: 0.5 }}
@@ -117,9 +123,15 @@ const ImageCarousel = ({ images }) => {
           <button
             key={idx}
             className={`w-3 h-3 rounded-full transition-all duration-300 shadow-md ${
-              imageIndex % images.length === idx ? "bg-cyan-400 w-8" : "bg-gray-300/80 hover:bg-white"
+              // Use imageIndex directly here
+              imageIndex === idx ? "bg-cyan-400 w-8" : "bg-gray-300/80 hover:bg-white"
             }`}
-            onClick={() => setPage([idx, idx > imageIndex % images.length ? 1 : -1])}
+            onClick={() => {
+                // FIX: Calculate the difference in pages needed to get to the index
+                const newDirection = idx > imageIndex ? 1 : -1;
+                const pageDifference = idx - imageIndex; 
+                setPage(([prevPage]) => [prevPage + pageDifference, newDirection]);
+            }}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
