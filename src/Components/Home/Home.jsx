@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Droplet, HeartPulse, Leaf, Sun, CheckCircle, Users, Zap } from "lucide-react";
-import videoUrl from "../../../public/demo.mp4";
+import videoUrl from "../../Asset/demo.mp4"; // Replace with your actual video file path
 
 /* -------------------------------------------------------------------------- */
 /*                         VIDEO BANNER - SINGLE VIDEO REPLACES CAROUSEL      */
