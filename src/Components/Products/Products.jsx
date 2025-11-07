@@ -13,8 +13,6 @@ import {
   Gauge,
   Sparkles,
   ArrowRight,
-  Play,
-  Pause,
   X,
   ChevronLeft,
   ChevronRight,
@@ -55,42 +53,33 @@ const videoVariants = {
   show: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
 };
 
-/* ────────────────────── Play-on-Click Video ────────────────────── */
+/* ────────────────────── Autoplay Video ────────────────────── */
 const ProductVideo = ({ src, poster }) => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) videoRef.current.pause();
-    else videoRef.current.play();
-    setIsPlaying(!isPlaying);
-  };
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be blocked; fallback silently
+      });
+    }
+  }, []);
 
   return (
-    <div
-      className="relative group cursor-pointer overflow-hidden rounded-3xl"
-      onClick={togglePlay}
-    >
+    <div className="relative overflow-hidden rounded-3xl shadow-2xl border border-gray-200">
       <video
         ref={videoRef}
         src={src}
         poster={poster}
+        autoPlay
         loop
         muted
         playsInline
-        className="w-full h-full object-cover rounded-3xl shadow-2xl border border-gray-200 group-hover:shadow-3xl transition-shadow duration-500"
+        className="w-full h-full object-cover rounded-3xl"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent rounded-3xl flex items-center justify-center pointer-events-none">
-        {isPlaying ? (
-          <Pause className="text-white w-16 h-16 drop-shadow-2xl" />
-        ) : (
-          <Play className="text-white w-16 h-16 drop-shadow-2xl" />
-        )}
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 p-6 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none">
         <p className="text-white font-bold text-lg drop-shadow-md">
-          Watch Magmist in Action
+          Magmist in Action
         </p>
       </div>
     </div>
@@ -162,7 +151,7 @@ const Lightbox = ({ images, current, onClose, onPrev, onNext }) => {
               key={i}
               onClick={(e) => {
                 e.stopPropagation();
-                if (i !== current) onNext(); // Simple cycle
+                if (i !== current) onNext();
               }}
               className={`w-14 h-14 rounded overflow-hidden border-2 transition ${
                 i === current ? "border-cyan-400" : "border-white/30"
