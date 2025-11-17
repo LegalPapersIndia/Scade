@@ -197,7 +197,7 @@ const Contact = () => {
               icon: <MapPin className="text-blue-600" size={28} />,
               title: "Visit Us",
               content: "SCADE Studio\nMysore, Karnataka, India",
-              href: "https://maps.google.com/?q=Mysore,+Karnataka",
+              href: "https://maps.app.goo.gl/SFU8GhkwuRHzhbNC6",
               note: "By appointment only",
             },
           ].map((item, idx) => (

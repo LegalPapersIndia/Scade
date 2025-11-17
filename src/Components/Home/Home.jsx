@@ -23,15 +23,6 @@ const VideoBanner = ({ videoUrl, title, subtitle }) => {
         preload="auto"
       />
 
-      {/* Optional Fallback Image (uncomment if needed) */}
-      {/* 
-      <img
-        src="https://images.unsplash.com/photo-1559827260-dc66d52bef19"
-        alt="Fallback"
-        className="absolute inset-0 w-full h-full object-cover -z-10"
-      />
-      */}
-
       {/* Gradient Overlay + Animated Text */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end items-start p-12">
         <motion.h2
@@ -92,17 +83,26 @@ const Home = () => {
 
   return (
     <div className="pt-28 bg-white min-h-screen text-center px-4 md:px-8">
-      {/* Header */}
+      {/* Header - Updated Headline & Subtitle */}
       <motion.header
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="max-w-5xl mx-auto mb-16"
       >
-        <h1 className="text-5xl sm:text-7xl font-extrabold text-green-900 mb-6 tracking-tight">
-          <span className="text-cyan-600">SCADE -</span> Precision, Reliability & Advanced Solutions
+        <h1 className="text-5xl sm:text-7xl font-extrabold text-green-900 mb-4 tracking-tight">
+          <span className="text-cyan-600">Scade</span> Store
         </h1>
-        <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed">
+
+        {/* New subtitle on its own line with different style */}
+        <p className="text-2xl sm:text-4xl text-gray-700 font-light italic tracking-wide leading-snug">
+          Precision, Reliability{" "}
+          <span className="text-cyan-600 font-normal not-italic">&</span>{" "}
+          Advanced Solutions
+        </p>
+
+        {/* Optional tagline below (kept for context) */}
+        <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed mt-8">
           Redefining the future through{" "}
           <strong className="font-semibold text-blue-800">science, care, and technology</strong>
           —pioneering products that enhance human health while protecting the planet.
@@ -112,7 +112,7 @@ const Home = () => {
       {/* Video Banner */}
       <div className="max-w-7xl mx-auto mb-32">
         <VideoBanner
-          videoUrl={videoUrl} // CHANGE THIS TO YOUR VIDEO URL
+          videoUrl={videoUrl}
           title="The Future of Air-to-Water Technology"
           subtitle="Atmospheric water generator extracting pure water from air"
         />

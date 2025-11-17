@@ -29,6 +29,14 @@ import m6 from "../../Asset/m6.jpg";
 import m7 from "../../Asset/m7.jpg";
 import m8 from "../../Asset/m8.jpg";
 
+// ── NEW IMPORTS ───────────────────────────────────────────────────────
+import mm1 from "../../Asset/mm1.jpg"
+import mm2 from "../../Asset/mm2.jpg";
+import mm3 from "../../Asset/mm3.jpg";
+import mm4 from "../../Asset/mm4.jpg";
+import mm5 from "../../Asset/mm5.jpg";
+import mm6 from "../../Asset/mm6.jpg";
+
 /* ────────────────────── Animation Variants ────────────────────── */
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -193,13 +201,52 @@ const Products = () => {
     ],
   };
 
-  // Lightbox State
+  /* ────────────────────── SECOND PRODUCT DATA ────────────────────── */
+  const productMediaMini = {
+    images: [
+      { src: mm1, alt: "Magmist Mini – Front" },
+      { src: mm2, alt: "Magmist Mini – Side" },
+      { src: mm3, alt: "Magmist Mini – Top" },
+      { src: mm4, alt: "Magmist Mini – Outlet" },
+      { src: mm5, alt: "Magmist Mini – Panel" },
+      { src: mm6, alt: "Magmist Mini – Cartridge" }
+    ],
+  };
+
+  const featuresMini = [
+    { icon: <CloudRain className="text-cyan-600" size={28} />, title: "Air to Pure Water", description: "Same tech, smaller footprint.", color: "from-cyan-100 to-blue-50" },
+    { icon: <Droplet className="text-blue-600" size={28} />, title: "Zero Waste", description: "100 % efficient, no RO waste.", color: "from-blue-100 to-cyan-50" },
+    { icon: <Zap className="text-yellow-600" size={28} />, title: "Battery Ready", description: "Runs on 12 V or solar.", color: "from-yellow-100 to-orange-50" },
+    { icon: <Brain className="text-purple-600" size={28} />, title: "Smart Mini AI", description: "Real-time TDS & pH monitoring.", color: "from-purple-100 to-pink-50" },
+    { icon: <Heart className="text-pink-600" size={28} />, title: "Alkaline Boost", description: "pH 8.5–9.5 with essential minerals.", color: "from-pink-100 to-red-50" },
+    { icon: <Plug className="text-gray-600" size={28} />, title: "Plug & Go", description: "No plumbing, ready in 3 min.", color: "from-gray-100 to-slate-50" },
+    { icon: <Shield className="text-green-600" size={28} />, title: "Off-Grid Ready", description: "Works anywhere, anytime.", color: "from-green-100 to-emerald-50" },
+    { icon: <Leaf className="text-emerald-600" size={28} />, title: "Eco-Portable", description: "Cuts 5,000+ plastic bottles/year.", color: "from-emerald-100 to-teal-50" },
+  ];
+
+  // Lightbox State – Original
   const [lightbox, setLightbox] = useState({ open: false, index: 0 });
 
   const openLightbox = (idx) => setLightbox({ open: true, index: idx });
   const closeLightbox = () => setLightbox((s) => ({ ...s, open: false }));
   const goPrev = () => setLightbox((s) => ({ ...s, index: s.index === 0 ? productMedia.images.length - 1 : s.index - 1 }));
   const goNext = () => setLightbox((s) => ({ ...s, index: s.index === productMedia.images.length - 1 ? 0 : s.index + 1 }));
+
+  // Lightbox State – Mini
+  const [lightboxMini, setLightboxMini] = useState({ open: false, index: 0 });
+
+  const openLightboxMini = (idx) => setLightboxMini({ open: true, index: idx });
+  const closeLightboxMini = () => setLightboxMini((s) => ({ ...s, open: false }));
+  const goPrevMini = () =>
+    setLightboxMini((s) => ({
+      ...s,
+      index: s.index === 0 ? productMediaMini.images.length - 1 : s.index - 1,
+    }));
+  const goNextMini = () =>
+    setLightboxMini((s) => ({
+      ...s,
+      index: s.index === productMediaMini.images.length - 1 ? 0 : s.index + 1,
+    }));
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-b from-blue-50 via-white to-cyan-50 min-h-screen px-6 md:px-10">
@@ -231,7 +278,7 @@ const Products = () => {
         </motion.div>
       </motion.header>
 
-      {/* HERO VIDEO + DESCRIPTION */}
+      {/* HERO VIDEO + DESCRIPTION – MAGMIST */}
       <section className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div variants={videoVariants} initial="hidden" whileInView="show" viewport={{ once: true }} className="order-2 lg:order-1">
@@ -259,7 +306,7 @@ const Products = () => {
         </div>
       </section>
 
-      {/* PRODUCT GALLERY – CLICK TO ZOOM */}
+      {/* PRODUCT GALLERY – MAGMIST – CLICK TO ZOOM */}
       <motion.section
         className="max-w-7xl mx-auto mt-16"
         variants={containerVariants}
@@ -297,7 +344,7 @@ const Products = () => {
           ))}
         </div>
 
-        {/* Lightbox */}
+        {/* Lightbox – Magmist */}
         {lightbox.open && (
           <Lightbox
             images={productMedia.images}
@@ -309,7 +356,7 @@ const Products = () => {
         )}
       </motion.section>
 
-      {/* FEATURES GRID */}
+      {/* FEATURES GRID – MAGMIST */}
       <motion.section
         className="max-w-7xl mx-auto mt-24"
         variants={containerVariants}
@@ -345,7 +392,144 @@ const Products = () => {
         </div>
       </motion.section>
 
-      {/* FINAL CTA */}
+      {/* ────────────────────── SECOND PRODUCT (Magmist Mini) ────────────────────── */}
+      <section className="max-w-7xl mx-auto mt-32">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Description – left side */}
+          <motion.div
+            className="order-1 lg:order-2 space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <h2 className="text-4xl font-bold text-blue-900">
+              Magmist <span className="text-cyan-600">Mini</span> – Pure Water, Anywhere.
+            </h2>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              The ultra-portable sibling of Magmist. Same condensation + multi-stage purification,
+              now in a 12 kg package that runs on a car battery or solar panel.
+            </p>
+            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-6 rounded-2xl shadow-inner border-l-4 border-cyan-600">
+              <blockquote className="text-xl font-semibold text-cyan-800 italic">
+                “Your personal water source for camping, travel, or emergency kits.”
+              </blockquote>
+            </div>
+            <motion.a
+              href="#"
+              className="inline-flex items-center gap-2 bg-cyan-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-cyan-700 transition-all"
+              whileHover={{ x: 5 }}
+            >
+              Learn More <ArrowRight size={20} />
+            </motion.a>
+          </motion.div>
+
+          {/* Video – right side */}
+          <motion.div
+            variants={videoVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="order-2 lg:order-1"
+          >
+            <ProductVideo src={productMediaMini.videoUrl} poster={productMediaMini.images[0].src} />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MINI GALLERY – CLICK TO ZOOM */}
+      <motion.section
+        className="max-w-7xl mx-auto mt-16"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold text-center text-blue-800 mb-12"
+          variants={itemVariants}
+        >
+          Explore <span className="text-cyan-600">Magmist Mini : Wall mount machine</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[180px]">
+          {productMediaMini.images.map((image, idx) => (
+            <motion.div
+              key={idx}
+              variants={itemVariants}
+              whileHover={{ scale: 1.04, y: -6 }}
+              className="group relative overflow-hidden rounded-2xl shadow-lg cursor-zoom-in"
+              onClick={() => openLightboxMini(idx)}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+                onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/400x300?text=Image+Not+Found")}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <p className="text-white text-sm font-semibold drop-shadow-md flex items-center gap-1">
+                  <ZoomIn size={16} />
+                  {image.alt}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Lightbox – Mini */}
+        {lightboxMini.open && (
+          <Lightbox
+            images={productMediaMini.images}
+            current={lightboxMini.index}
+            onClose={closeLightboxMini}
+            onPrev={goPrevMini}
+            onNext={goNextMini}
+          />
+        )}
+      </motion.section>
+
+      {/* MINI FEATURES GRID */}
+      <motion.section
+        className="max-w-7xl mx-auto mt-24"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold text-center text-blue-800 mb-16"
+          variants={itemVariants}
+        >
+          Why Choose <span className="text-cyan-600">Magmist Mini</span>
+        </motion.h2>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuresMini.map((feature, index) => (
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              whileHover={{ y: -8, scale: 1.03 }}
+              className={`group relative bg-gradient-to-br ${feature.color} p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-cyan-300 overflow-hidden`}
+            >
+              <div className="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-white/80 rounded-xl shadow-md group-hover:scale-110 transition-transform">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800">{feature.title}</h3>
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
+              </div>
+              <Gauge className="absolute bottom-2 right-2 text-cyan-400/20" size={32} aria-hidden="true" />
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* FINAL CTA – updated */}
       <motion.div
         className="max-w-4xl mx-auto text-center mt-20"
         initial={{ opacity: 0, y: 30 }}
@@ -353,16 +537,22 @@ const Products = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.3 }}
       >
-        <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">Ready to Drink the Future?</h3>
+        <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">
+          Ready to Drink the Future?
+        </h3>
+        <p className="text-lg text-gray-600 mb-6">
+          Choose <strong>Magmist</strong> for home/office or <strong>Magmist Mini</strong> for on-the-go.
+        </p>
         <motion.a
-          href="https://wa.me/917411532800?text=Hi%20SCADE%20Team!%20I%20want%20to%20know%20more%20about%20Magmist."
+          href="https://wa.me/917411532800?text=Hi%20SCADE%20Team!%20I%20want%20to%20know%20more%20about%20Magmist%20and%20Magmist%20Mini."
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-full text-base font-bold shadow-lg hover:shadow-cyan-500/40 transition-all"
-          whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.96 }}
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.96 }}
         >
           <Droplet className="animate-pulse" size={40} />
-          Get Magmist
+          Get Your Magmist
         </motion.a>
       </motion.div>
     </div>
