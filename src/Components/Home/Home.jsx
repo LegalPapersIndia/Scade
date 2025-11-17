@@ -1,5 +1,4 @@
 // src/components/Home/Home.jsx
-import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Droplet, HeartPulse, Leaf, Sun, CheckCircle, Users, Zap } from "lucide-react";
