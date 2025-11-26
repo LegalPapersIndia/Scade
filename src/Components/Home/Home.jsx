@@ -13,7 +13,7 @@ import {
 import { useState, useEffect } from "react";
 
 import videoUrl from "../../Asset/demo.mp4";
-import campusVideo from "../../Asset/campus.mp4";
+import campusVideo from "../../Asset/Campus.mp4";
 
 /* -------------------------------------------------------------------------- */
 /*                    HERO VIDEO BANNER WITH 3-SEC LOGO INTRO                */
