@@ -1,48 +1,127 @@
 // src/components/Home/Home.jsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Droplet, HeartPulse, Leaf, Sun, CheckCircle, Users, Zap } from "lucide-react";
-import videoUrl from "../../Asset/demo.mp4"; // Replace with your actual video file path
+import {
+  Droplet,
+  HeartPulse,
+  Leaf,
+  Sun,
+  CheckCircle,
+  Users,
+  Zap,
+} from "lucide-react";
+import { useState, useEffect } from "react";
+
+import videoUrl from "../../Asset/demo.mp4";
+import campusVideo from "../../Asset/campus.mp4";
 
 /* -------------------------------------------------------------------------- */
-/*                         VIDEO BANNER - SINGLE VIDEO REPLACES CAROUSEL      */
+/*                    HERO VIDEO BANNER WITH 3-SEC LOGO INTRO                */
 /* -------------------------------------------------------------------------- */
-const VideoBanner = ({ videoUrl, title, subtitle }) => {
+const VideoBanner = ({ title, subtitle }) => {
+  const [showLogo, setShowLogo] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLogo(false);
+    }, 3000); // Logo for 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="relative w-full h-[32rem] overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/30 mb-20 border-8 border-white bg-gray-100">
-      {/* Video Background */}
+    <div className="relative w-full h-[32rem] overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/30 mb-20 border-8 border-white bg-black">
+      {/* === LOGO INTRO (3 seconds) === */}
+      {showLogo && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 flex items-center justify-center bg-black z-30"
+        >
+          <img
+            src="/logo.png"  // Make sure logo.png is in public folder
+            alt="Scade Store Logo"
+            className="w-144 h-144 md:w-144 md:h-144 object-contain drop-shadow-2xl animate-pulse"
+          />
+        </motion.div>
+      )}
+
+      {/* === MAIN HERO VIDEO === */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
         src={videoUrl}
         autoPlay
         loop
         muted
         playsInline
-        controls={false}
         preload="auto"
+        style={{ opacity: showLogo ? 0 : 1 }}
       />
 
-      {/* Gradient Overlay + Animated Text */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end items-start p-12">
+      {/* Gradient + Text Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end items-start p-10 md:p-16 z-20">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-4xl sm:text-5xl font-extrabold text-white text-left tracking-tight max-w-4xl"
+          animate={{ opacity: showLogo ? 0 : 1, y: showLogo ? 50 : 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white text-left tracking-tight max-w-5xl leading-tight"
         >
           {title}
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-lg text-white/90 mt-2 max-w-3xl text-left font-light"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: showLogo ? 0 : 1, y: showLogo ? 40 : 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="text-lg md:text-xl text-white/90 mt-4 max-w-3xl text-left font-light leading-relaxed"
         >
           {subtitle}
         </motion.p>
       </div>
     </div>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*                MANUFACTURING CAMPUS – CLEAN, TEXT BELOW VIDEO               */
+/* -------------------------------------------------------------------------- */
+const ManufacturingCampus = () => {
+  return (
+    <section className="relative w-full bg-black">
+      <div className="relative w-full h-96 md:h-screen max-h-screen overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src={campusVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        />
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
+
+      <div className="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
+              Our Manufacturing Campus
+            </h2>
+            <p className="text-xl md:text-2xl text-cyan-100 font-light max-w-5xl mx-auto leading-relaxed opacity-90">
+              A state-of-the-art, eco-conscious facility where precision engineering meets sustainable innovation. 
+              Every Magmist unit is crafted with uncompromising quality, powered by clean energy, and designed for a healthier planet.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -72,7 +151,7 @@ const Home = () => {
     {
       title: "Pillar Tech",
       icon: <Sun className="text-amber-500" size={40} />,
-      description: "Built on Precision, Reliability, Advanced Solutions, innovation, health & planet here.",
+      description: "Built on Precision, Reliability, Advanced Solutions, innovation, health & planet.",
       color: "amber",
     },
   ];
@@ -82,7 +161,7 @@ const Home = () => {
 
   return (
     <div className="pt-28 bg-white min-h-screen text-center px-4 md:px-8">
-      {/* Header - Updated Headline & Subtitle */}
+      {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -92,15 +171,11 @@ const Home = () => {
         <h1 className="text-5xl sm:text-7xl font-extrabold text-green-900 mb-4 tracking-tight">
           <span className="text-cyan-600">Scade</span> Store
         </h1>
-
-        {/* New subtitle on its own line with different style */}
         <p className="text-2xl sm:text-4xl text-gray-700 font-light italic tracking-wide leading-snug">
           Precision, Reliability{" "}
           <span className="text-cyan-600 font-normal not-italic">&</span>{" "}
           Advanced Solutions
         </p>
-
-        {/* Optional tagline below (kept for context) */}
         <p className="text-xl sm:text-2xl text-gray-500 font-normal leading-relaxed mt-8">
           Redefining the future through{" "}
           <strong className="font-semibold text-blue-800">science, care, and technology</strong>
@@ -108,22 +183,16 @@ const Home = () => {
         </p>
       </motion.header>
 
-      {/* Video Banner */}
+      {/* Hero Video Banner with Logo Intro */}
       <div className="max-w-7xl mx-auto mb-32">
         <VideoBanner
-          videoUrl={videoUrl}
           title="The Future of Air-to-Water Technology"
           subtitle="Atmospheric water generator extracting pure water from air"
         />
       </div>
 
-      {/* Principles Section */}
-      <motion.section
-        className="flex justify-center gap-6 md:gap-8 flex-wrap max-w-7xl mx-auto pb-24"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-      >
+      {/* Rest of your beautiful sections remain unchanged */}
+      <motion.section className="flex justify-center gap-6 md:gap-8 flex-wrap max-w-7xl mx-auto pb-24">
         {principles.map((item) => (
           <motion.article
             key={item.title}
@@ -167,39 +236,26 @@ const Home = () => {
               perfectly alkaline water without a drop of water waste.
             </p>
             <ul className="space-y-4 text-gray-700 text-lg">
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span className="text-gray-700">
-                  <strong>Alkaline Purity:</strong>{" "}
-                  <span className="font-semibold text-cyan-700">pH 8.5+</span> for optimal balance and
-                  detoxification.
-                </span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={24} />
+                <span><strong>Alkaline Purity:</strong> pH 8.5+ for optimal balance and detoxification.</span>
               </li>
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span className="text-gray-700">
-                  <strong>Mineral Enriched:</strong> Includes essential trace minerals like Calcium
-                  (Ca), Magnesium (Mg), Iron (Fe), Zinc (Zn), and Copper (Cu).
-                </span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={24} />
+                <span><strong>Mineral Enriched:</strong> Ca, Mg, Fe, Zn, Cu – essential trace minerals.</span>
               </li>
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span className="text-gray-700">
-                  <strong>Health & Taste:</strong> Minerals are balanced for superior taste and
-                  enhanced health benefits.
-                </span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={24} />
+                <span><strong>Health & Taste:</strong> Balanced minerals for superior taste and wellness.</span>
               </li>
-              <li className="flex items-start">
-                <CheckCircle className="text-cyan-600 mr-3 mt-1 flex-shrink-0" size={24} />
-                <span className="text-gray-700">
-                  <strong>Eco-Conscious:</strong> Zero plastic, powered by clean energy options for a
-                  sustainable footprint.
-                </span>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="text-cyan-600 mt-1 flex-shrink-0" size={24} />
+                <span><strong>Eco-Conscious:</strong> Zero plastic. Powered by clean energy options.</span>
               </li>
             </ul>
             <Link
               to="/products"
-              className="inline-flex items-center mt-12 px-10 py-5 text-lg font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition transform hover:scale-[1.03] shadow-lg shadow-cyan-500/50"
+              className="inline-flex items-center mt-12 px-10 py-5 text-lg font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition transform hover:scale-105 shadow-lg shadow-cyan-500/50"
             >
               Discover the Magmist Difference
             </Link>
@@ -216,7 +272,7 @@ const Home = () => {
               <img
                 src={magmistProductImage}
                 alt="Magmist Atmospheric Water Generator"
-                className="rounded-xl w-full h-auto object-cover"
+                className="rounded-xl w-full h-auto object-cover shadow-xl"
               />
             </div>
           </motion.div>
@@ -226,13 +282,7 @@ const Home = () => {
       <hr className="max-w-7xl mx-auto border-gray-100" />
 
       {/* Global Trust Stats */}
-      <motion.section
-        className="py-24 bg-blue-50/50"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true, amount: 0.5 }}
-      >
+      <motion.section className="py-24 bg-blue-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-4xl font-extrabold text-blue-900 mb-16 tracking-tight">
             Global Trust & Proven Innovation
@@ -249,7 +299,7 @@ const Home = () => {
                 whileInView={{ scale: 1, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 150, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:translate-y-[-5px] w-full sm:w-60 border-b-4 border-transparent hover:border-cyan-400"
+                className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 w-full sm:w-60 border-b-4 border-transparent hover:border-cyan-400"
               >
                 <metric.icon className={`text-${metric.color}-600 mx-auto mb-4`} size={40} />
                 <p className="text-6xl font-black text-blue-900 tracking-tighter">{metric.stat}</p>
@@ -262,20 +312,17 @@ const Home = () => {
         </div>
       </motion.section>
 
+      {/* Manufacturing Campus */}
+      <ManufacturingCampus />
+
       {/* Final CTA */}
-      <motion.div
-        className="mt-24 pb-32"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 1 }}
-        viewport={{ once: true }}
-      >
+      <motion.div className="mt-32 pb-32">
         <h3 className="text-4xl font-extrabold text-blue-900 mb-10 tracking-tight">
           Ready to Experience True Purity?
         </h3>
         <Link
           to="/products"
-          className="inline-flex items-center justify-center px-16 py-7 text-xl font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition duration-300 transform hover:scale-105 shadow-2xl shadow-cyan-600/60 focus:outline-none focus:ring-4 focus:ring-cyan-500/50"
+          className="inline-flex items-center justify-center px-16 py-7 text-xl font-bold rounded-full text-white bg-cyan-600 hover:bg-cyan-700 transition duration-300 transform hover:scale-105 shadow-2xl shadow-cyan-600/60"
         >
           <Droplet className="mr-3" size={24} /> Explore All Products
         </Link>

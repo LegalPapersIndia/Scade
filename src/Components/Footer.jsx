@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 // ---- Your local logo -------------------------------------------------
-import Logo from "../Asset/1.jpg";
+import Logo from "../Asset/1.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

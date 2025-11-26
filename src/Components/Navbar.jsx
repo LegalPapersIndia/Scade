@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home, Info, Droplet, Users, Phone, Menu, X } from "lucide-react";
-import Logo from "../Asset/1.jpg";
+import Logo from "../Asset/1.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,7 @@ const Navbar = () => {
             <img
               src={Logo}
               alt="SCADE Studio"
-              className="h-11 w-auto object-contain rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="h-14 w-auto object-contain rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
               loading="eager"
             />
           </Link>
